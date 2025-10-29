@@ -15,14 +15,25 @@ jobs:
         node-version: [18.x, 20.x, 22.x]
 
     steps:
-    - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v4
-      with:
-        node-version: ${{ matrix.node-version }}
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+          cache-dependency-path: package-lock.json
 
-    - name: Build
-      run: |
-        npm install
-        npx webpack
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build (webpack or npm script)
+        run: |
+          # prefer running a locally-installed webpack (no network). If not present, fall back to npm run build if available
+          if npx --no-install webpack --version >/dev/null 2>&1; then
+            echo "Found local webpack, running webpack --mode production"
+            npx webpack --mode production
+          else
+            echo "Local webpack not found, running npm run build --if-present"
+            npm run build --if-present
+          fi
