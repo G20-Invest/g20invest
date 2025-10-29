@@ -1,0 +1,19 @@
+{
+  "name": "g20invest",
+  "homepage": "https://G20_Invest.github.io/g20invest",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
+  },
+  "dependencies": {
+    "react": "^18",
+    "react-dom": "^18",
+    "react-router-dom": "^6"
+  },
+  "devDependencies": {
+    "vite": "^5",
+    "gh-pages": "^6"
+  }
+}
